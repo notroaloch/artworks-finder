@@ -1,6 +1,7 @@
 # Artworks Finder
 
-Aplicación web para buscar artworks utilizando la librería de música de Apple Music
+Aplicación web para buscar artworks utilizando la librería de música de Apple Music  
+Proyecto inspirado en [@bendodson/itunes-artwork-finder](https://github.com/bendodson/itunes-artwork-finder)
 
 ## Instalación y Uso
 
