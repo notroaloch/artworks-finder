@@ -2,7 +2,10 @@
 	<div class="w-full pt-2 flex justify-center gap-3 lg:justify-end">
 		<!-- Language Selector -->
 		<div class="flex items-center gap-1">
-			<TranslateIcon class="w-5 h-5 hover:text-purple-600" />
+			<TranslateIcon
+				class="w-5 h-5 cursor-pointer hover:text-purple-600"
+				@click="changeLangFromIcon"
+			/>
 			<select
 				name="language"
 				id="language"
@@ -22,13 +25,19 @@
 
 		<!-- Color Mode Selector -->
 		<div class="flex items-center gap-1">
-			<SunIcon class="w-5 h-5 hover:text-purple-600 dark:hidden" />
-			<MoonIcon class="w-5 h-5 hover:text-purple-600 hidden dark:block" />
+			<SunIcon
+				class="w-5 h-5 cursor-pointer hover:text-purple-600 dark:hidden"
+				@click="changeTheme('dark')"
+			/>
+			<MoonIcon
+				class="w-5 h-5 cursor-pointer hover:text-purple-600 hidden dark:block"
+				@click="changeTheme('light')"
+			/>
 			<select
 				name="theme"
 				id="theme"
 				v-model="theme"
-				@change="changeTheme"
+				@change="changeTheme(this.theme)"
 				class="cursor-pointer"
 			>
 				<option value="dark">
@@ -60,28 +69,42 @@ export default {
 		};
 	},
 	methods: {
-		changeTheme() {
+		changeTheme(theme) {
 			const body = document.querySelector('body');
 
-			if (this.theme !== 'dark') {
+			if (theme !== 'dark') {
 				body.classList.remove('dark');
 			} else {
 				body.classList.add('dark');
 			}
 
-			localStorage.setItem('theme', this.theme);
+			localStorage.setItem('theme', theme);
+			this.theme = theme;
 		},
 		changeLang() {
+			this.lang = localStorage.getItem('lang') || 'es-MX';
 			localStorage.setItem('lang', this.lang);
 			this.$root.$i18n.locale = this.lang;
+		},
+		changeLangFromIcon() {
+			const actualLang = localStorage.getItem('lang') || 'es-MX';
+			const lang = actualLang === 'es-MX' ? 'en-US' : 'es-MX';
+
+			this.lang = lang;
+			localStorage.setItem('lang', lang);
+			this.$root.$i18n.locale = lang;
 		},
 	},
 	components: { TranslateIcon, SunIcon, MoonIcon },
 	created() {
 		this.theme = localStorage.getItem('theme') || 'light';
-		this.changeTheme();
+		localStorage.setItem('theme', this.theme);
+
 		this.lang = localStorage.getItem('lang') || 'es-MX';
-		this.changeLang();
+		localStorage.setItem('lang', this.lang);
+
+		this.changeLang(this.lang);
+		this.changeTheme(this.theme);
 	},
 };
 </script>
