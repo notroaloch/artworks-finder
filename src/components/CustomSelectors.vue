@@ -82,7 +82,6 @@ export default {
 			this.theme = theme;
 		},
 		changeLang() {
-			this.lang = localStorage.getItem('lang') || 'es-MX';
 			localStorage.setItem('lang', this.lang);
 			this.$root.$i18n.locale = this.lang;
 		},
