@@ -44,6 +44,7 @@ export default {
 			this.loading = true;
 			this.term = term;
 			this.country = country;
+			this.lastArtwork = 0;
 
 			const data = await itunesAPI
 				.post('/search', null, {
