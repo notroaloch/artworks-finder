@@ -5,6 +5,7 @@ const messages = {
 	messageEmptyList: 'Nothing to show',
 	selectDarkMode: 'Dark',
 	selectLightMode: 'Light',
+	buttonLoadMore: 'Load more',
 };
 
 export default messages;

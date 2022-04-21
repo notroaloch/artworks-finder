@@ -3,6 +3,11 @@
 		<CustomSelectors :availableLanguages="availableLanguages" />
 		<SearchBar @submit="searchArtworks" :loading="loading" />
 		<ArtworksGrid :artworks="artworks" />
+		<div v-if="artworks.length > 0" class="mx-auto mt-10">
+			<button class="text-purple-600 hover:scale-110" @click="searchArtworks({term, country})">
+				{{ $t('buttonLoadMore') }}
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -28,23 +33,32 @@ export default {
 			availableLanguages,
 			artworks: [],
 			loading: false,
+			term: '',
+			country: '',
+		    lastArtwork: 0,
 		};
 	},
 	methods: {
 		async searchArtworks({ term, country }) {
+
 			this.loading = true;
+			this.term = term;
+			this.country = country;
 
 			const data = await itunesAPI
 				.post('/search', null, {
 					params: {
-						term,
-						country,
+						term: this.term,
+						country: this.country,
 						entity: 'album',
+						limit: 24,
+						offset: this.lastArtwork
 					},
 				})
 				.then((res) => res.data.results);
 
-			this.artworks = transformArtworks(data);
+			this.artworks = [...this.artworks, ...transformArtworks(data)];
+			this.lastArtwork = this.lastArtwork + this.artworks.length;
 
 			this.loading = false;
 		},
